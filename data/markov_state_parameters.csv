@@ -1,0 +1,4 @@
+state,demand_multiplier,capacity_multiplier,route_availability
+Normal,1.0,1.0,0.95
+Pico,1.2,0.8,0.9
+Disrupcion,1.0,0.5,0.5
