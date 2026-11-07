@@ -1,0 +1,5 @@
+Modelo,Supuesto crítico,Consecuencia si es falso
+Reoptimización (E1),El escenario se conoce antes de decidir,Los óptimos por escenario no serían implementables
+Compra de capacidad (E2),Capacidad divisible y precio lineal sin cargo fijo/bloques,"La formulación LP debe cambiar, probablemente a MILP"
+Compromiso robusto (E3),Solo tres escenarios modelados; plan no adaptable ex post,El costo de robustez y la factibilidad cambian
+Todos los modelos,Coeficientes de impacto y consumo lineales y estables,El LP puede no representar el desempeño operativo real

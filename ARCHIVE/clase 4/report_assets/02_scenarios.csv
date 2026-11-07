@@ -1,0 +1,7 @@
+Escenario,"Plan (A,P,D)",Objetivo,Δ vs base,% Δ,Restricciones activas
+"Base (120,80,100)","(5.71, 11.43, 20.00)",3897.14,0.0,0.0,"Ingeniería, Especialistas, Demanda D"
+"+10 Ingeniería (130,80,100)","(10.00, 10.00, 20.00)",4070.0,172.86,4.44,"Ingeniería, Especialistas, Demanda D"
+"+10 Especialistas (120,90,100)","(2.86, 15.71, 20.00)",4098.57,201.43,5.17,"Ingeniería, Especialistas, Demanda D"
+"+10 Plataforma (120,80,110)","(5.71, 11.43, 20.00)",3897.14,0.0,0.0,"Ingeniería, Especialistas, Demanda D"
+"+10 Ing +10 Esp (130,90,100)","(7.14, 14.29, 20.00)",4271.43,374.29,9.6,"Ingeniería, Especialistas, Demanda D"
+"Ampliado (140,100,120)","(8.57, 17.14, 20.00)",4645.71,748.57,19.21,"Ingeniería, Especialistas, Demanda D"

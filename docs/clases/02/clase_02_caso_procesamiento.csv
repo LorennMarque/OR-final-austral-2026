@@ -1,0 +1,4 @@
+tipo,nombre,valor,computo,operacion
+carga,batch,55,2,1
+carga,tiempo_real,90,1,3
+capacidad,disponible,0,100,90

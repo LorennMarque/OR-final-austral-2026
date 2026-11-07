@@ -1,0 +1,4 @@
+servicio,valor_por_unidad,horas_cpu,horas_gpu,horas_analista
+Tablero operativo,40,2,0,1
+Modelo predictivo,100,1,2,1
+capacidad_disponible,,80,60,50

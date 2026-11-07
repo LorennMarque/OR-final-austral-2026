@@ -1,0 +1,355 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\geometry{margin=2.0cm, top=1.7cm, bottom=1.8cm}
+\setstretch{1.05}
+\setlength{\parskip}{0.25em}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.2em, itemsep=0.1em, topsep=0.15em}
+\setlist[enumerate]{leftmargin=1.2em, itemsep=0.1em, topsep=0.15em}
+\captionsetup{font=footnotesize, labelfont=bf, skip=3pt}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue!50!black, citecolor=black}
+
+\newcommand{\pregunta}[1]{\noindent\textbf{Pregunta.} #1\par}
+\newcommand{\resultado}[1]{\noindent\textbf{Resultado.} #1\par}
+\newcommand{\interpretacion}[1]{\noindent\textbf{Interpretación.} #1\par}
+\newcommand{\verif}[1]{\noindent\small\textit{Verificación y límites.} #1\par}
+
+\title{\bfseries Problemas de transporte y flujo en redes\\
+\large Balance, transbordo, faltantes penalizados y flujo de costo mínimo --- SaludRed / AyudaFederal}
+\author{Lorenzo Marquesini\\[0.25em]
+\small Investigación Operativa --- Clase 05}
+\date{}
+
+\begin{document}
+\vspace{-0.6em}
+\maketitle
+\vspace{-1.4em}
+
+\begin{abstract}
+\noindent
+Cuatro modelos de programación lineal continua resueltos con OR-Tools (GLOP): transporte balanceado desde dos plantas a tres centros; transbordo por un hub con conservación de flujo; transporte con demanda excedente y variables de faltante penalizadas; y flujo de costo mínimo en una red con fuente y sumidero. Se documentan formulaciones, restricciones de balance, soluciones óptimas y verificaciones de factibilidad.
+\end{abstract}
+
+\noindent\textit{Unidades:} lotes y centenas de unidades monetarias (costos de transporte y manipulación). \textit{Implementación:} \texttt{clase 5/main.ipynb}.
+
+%==============================================================================
+\section{C05E1 --- Transporte balanceado}
+%==============================================================================
+
+\subsection*{Situación}
+SaludRed distribuye kits médicos desde dos plantas (P0, P1) hacia tres centros regionales (D0, D1, D2). P0 despacha hasta 35 lotes; P1 hasta 25. Los centros requieren exactamente 20, 25 y 15 lotes. Oferta total (60) coincide con demanda total (60): no hay inventario ni faltante.
+
+\pregunta{¿Cuántos lotes debe enviar cada planta a cada centro para cubrir exactamente las tres demandas al menor costo semanal?}
+
+\subsection*{Modelo}
+Variables $x_{ij}\ge 0$: lotes desde planta $i$ hacia centro $j$ (continuas). Matriz de costos por lote:
+\[
+C = \begin{pmatrix}
+4 & 6 & 8 \\
+5 & 4 & 3
+\end{pmatrix}
+\quad\text{(filas P0, P1; columnas D0, D1, D2).}
+\]
+\begin{align}
+\min \; Z &= \sum_{i,j} c_{ij}\, x_{ij},\\
+x_{p0,d0} + x_{p0,d1} + x_{p0,d2} &= 35 && \text{(oferta P0)},\\
+x_{p1,d0} + x_{p1,d1} + x_{p1,d2} &= 25 && \text{(oferta P1)},\\
+x_{p0,d0} + x_{p1,d0} &= 20 && \text{(demanda D0)},\\
+x_{p0,d1} + x_{p1,d1} &= 25 && \text{(demanda D1)},\\
+x_{p0,d2} + x_{p1,d2} &= 15 && \text{(demanda D2)}.
+\end{align}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Arcos, costos y límites de oferta/demanda (C05E1).}
+\label{tab:c05e1}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Arco & Costo & Oferta & Demanda \\
+\midrule
+p0-d0 & 4 & 35 & 20 \\
+p0-d1 & 6 & 35 & 25 \\
+p0-d2 & 8 & 35 & 15 \\
+p1-d0 & 5 & 25 & 20 \\
+p1-d1 & 4 & 25 & 25 \\
+p1-d2 & 3 & 25 & 15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Resultado}
+Estado: \textbf{óptimo} (viable). Solución:
+\begin{table}[H]
+\centering
+\small
+\caption{Flujos óptimos C05E1.}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Arco & Flujo \\
+\midrule
+p0-d0 & 20{,}00 \\
+p0-d1 & 15{,}00 \\
+p0-d2 & 0{,}00 \\
+p1-d0 & 0{,}00 \\
+p1-d1 & 10{,}00 \\
+p1-d2 & 15{,}00 \\
+\midrule
+\multicolumn{2}{l}{Costo mínimo total = 255{,}0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Reconstrucción: $20{\cdot}4 + 15{\cdot}6 + 10{\cdot}4 + 15{\cdot}3 = 80 + 90 + 40 + 45 = 255$.
+
+\interpretacion{P0 satura su oferta (35) enviando por rutas baratas hacia D0 y D1; P1 cubre el resto de D1 y toda D2 por la ruta más económica (p1-d2, costo 3). No se usa p1-d0 (costo 5) ni p0-d2 (costo 8).}
+
+\verif{Ofertas: $20+15+0=35$; $0+10+15=25$. Demandas: $20+0=20$; $15+10=25$; $0+15=15$. Balance global: $60=60$.}
+
+%==============================================================================
+\section{C05E2 --- Transbordo por un hub}
+%==============================================================================
+
+\subsection*{Situación}
+AyudaFederal traslada 50 lotes desde depósitos Oeste (O, 30 lotes) y Norte (N, 20) hacia regiones Centro (C) y Sur (S, 25 cada una), con posible consolidación en hub H. H no produce ni consume: flujo entrante = flujo saliente. Seis rutas dirigidas con costo y capacidad por arco.
+
+\pregunta{¿Qué flujo debe circular por cada una de las seis rutas para abastecer C y S al menor costo sin violar capacidades ni crear unidades en H?}
+
+\subsection*{Modelo}
+Convención de balance: \textbf{salida $-$ entrada}. Nodos transitorios en 0; fuentes positivas; demandas negativas.
+\begin{align}
+\min \; Z &= 2\,x_{O\!-\!H} + 3\,x_{N\!-\!H} + 5\,x_{O\!-\!C} + 4\,x_{N\!-\!S} + x_{H\!-\!C} + 2\,x_{H\!-\!S},\\
+0 &\le x_{arco} \le \text{capacidad}_{arco},\\
+x_{O\!-\!H} + x_{N\!-\!H} &= x_{H\!-\!C} + x_{H\!-\!S} && \text{(hub H)},\\
+x_{O\!-\!H} + x_{O\!-\!C} &= 30 && \text{(O)},\\
+x_{N\!-\!H} + x_{N\!-\!S} &= 20 && \text{(N)},\\
+x_{O\!-\!C} + x_{H\!-\!C} &= 25 && \text{(C)},\\
+x_{N\!-\!S} + x_{H\!-\!S} &= 25 && \text{(S)}.
+\end{align}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Rutas, costos y capacidades (C05E2).}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Arco & Costo & Capacidad \\
+\midrule
+O-H & 2 & 25 \\
+N-H & 3 & 20 \\
+O-C & 5 & 20 \\
+N-S & 4 & 20 \\
+H-C & 1 & 25 \\
+H-S & 2 & 25 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Resultado}
+Estado: \textbf{óptimo}. Solución:
+\begin{table}[H]
+\centering
+\small
+\caption{Flujos óptimos C05E2.}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Arco & Flujo \\
+\midrule
+O-H & 25{,}00 \\
+N-H & 0{,}00 \\
+O-C & 5{,}00 \\
+N-S & 20{,}00 \\
+H-C & 20{,}00 \\
+H-S & 5{,}00 \\
+\midrule
+\multicolumn{2}{l}{Costo mínimo total = 185{,}0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Reconstrucción: $25{\cdot}2 + 5{\cdot}5 + 20{\cdot}4 + 20{\cdot}1 + 5{\cdot}2 = 50 + 25 + 80 + 20 + 10 = 185$.
+
+\interpretacion{O envía casi todo por el hub (ruta barata O-H, costo 2) y complementa C directamente (5 lotes). N va directo a S (N-S al máximo, 20) sin usar el hub. H transborda 25 entrantes hacia C (20) y S (5). La ruta H-C (costo 1) concentra el flujo consolidado hacia C.}
+
+\verif{Hub: $25+0=20+5=25$. O: $25+5=30$. N: $0+20=20$. C: $5+20=25$. S: $20+5=25$. Todas las capacidades respetadas.}
+
+%==============================================================================
+\section{C05E3 --- Demanda no atendida con penalización}
+%==============================================================================
+
+\subsection*{Situación}
+Contingencia en la misma red de C05E1: ofertas iguales (35 y 25), pero D1 aumenta de 25 a 40 lotes. Demanda total 75 vs.\ oferta 60. Se introducen variables $r_j\ge 0$ (lotes no atendidos en D0, D1, D2). Penalización común $p$ por lote faltante; el enunciado propone ensayar $p\in\{10,50,200\}$. El notebook resuelve $p=10$.
+
+\pregunta{¿Cómo distribuir los 60 lotes disponibles y en qué centros registrar faltantes para minimizar costo logístico más penalización?}
+
+\subsection*{Modelo}
+\begin{align}
+\min \; Z &= \sum_{i,j} c_{ij}\, x_{ij} + p\,(r_{d0}+r_{d1}+r_{d2}),\\
+x_{p0,d0}+x_{p0,d1}+x_{p0,d2} &\le 35,\\
+x_{p1,d0}+x_{p1,d1}+x_{p1,d2} &\le 25,\\
+x_{p0,d0}+x_{p1,d0}+r_{d0} &= 20,\\
+x_{p0,d1}+x_{p1,d1}+r_{d1} &= 40,\\
+x_{p0,d2}+x_{p1,d2}+r_{d2} &= 15,\\
+0 &\le r_{d0}\le 20,\quad 0\le r_{d1}\le 40,\quad 0\le r_{d2}\le 15.
+\end{align}
+Ofertas con $\le$ (no obligatorias); demandas con igualdad incluyendo faltante.
+
+\subsection*{Resultado ($p=10$)}
+Estado: \textbf{óptimo}.
+\begin{table}[H]
+\centering
+\small
+\caption{Solución C05E3 con penalización $p=10$.}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Concepto & Valor \\
+\midrule
+p0-d0 & 20{,}00 \\
+p0-d1 & 15{,}00 \\
+p0-d2 & 0{,}00 \\
+p1-d0 & 0{,}00 \\
+p1-d1 & 10{,}00 \\
+p1-d2 & 15{,}00 \\
+\midrule
+$r_{d0}$ & 0{,}00 \\
+$r_{d1}$ & 15{,}00 \\
+$r_{d2}$ & 0{,}00 \\
+\midrule
+Costo logístico & 255{,}0 \\
+Penalización ($10\times 15$) & 150{,}0 \\
+Costo total & 405{,}0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\interpretacion{Con penalización baja ($p=10$), el modelo concentra el faltante en D1 (15 lotes): es más barato enviar por rutas económicas y pagar penalización que usar rutas caras para cubrir todo. D0 y D2 quedan totalmente servidos. El costo logístico (255) coincide con el óptimo balanceado de C05E1 sobre los 60 lotes disponibles.}
+
+\verif{Ofertas: P0 usa 35; P1 usa 25 (saturación total). Demanda efectiva: $20+25+15=60$ enviados $+$ $15$ faltantes $=75$. Para $p=50$ y $p=200$ conviene reoptimizar: a mayor penalización, el faltante tendería a reducirse si existen rutas viables.}
+
+%==============================================================================
+\section{C05E4 --- Flujo de costo mínimo (fuente y sumidero)}
+%==============================================================================
+
+\subsection*{Situación}
+Red con demanda 10 unidades desde fuente $s$ hasta sumidero $t$. Aristas: $(s,A)$, $(s,B)$, $(A,B)$, $(A,t)$, $(B,t)$ con costos $2,4,1,5,2$ y capacidades $6,8,3,6,8$.
+
+\pregunta{¿Qué flujo por arista minimiza el costo total respetando balances nodales y capacidades?}
+
+\subsection*{Balances nodales}
+Convención: \textbf{flujo saliente $-$ flujo entrante}. Solo $s$ genera flujo neto ($+10$); solo $t$ lo absorbe ($-10$); nodos intermedios en balance cero.
+\begin{align}
+\text{nodo } s:&\quad x_{sA} + x_{sB} = 10,\\
+\text{nodo } A:&\quad -x_{sA} + x_{AB} + x_{At} = 0,\\
+\text{nodo } B:&\quad -x_{sB} - x_{AB} + x_{Bt} = 0,\\
+\text{nodo } t:&\quad -x_{At} - x_{Bt} = -10.
+\end{align}
+$s$ es la única fuente porque debe inyectar 10 unidades netas hacia la red; $t$ es el único sumidero porque debe recibir esas 10 unidades. $A$ y $B$ solo redistribuyen: todo lo que entra debe salir.
+
+\subsection*{Modelo}
+\begin{equation}
+\min \; Z = 2\,x_{sA} + 4\,x_{sB} + x_{AB} + 5\,x_{At} + 2\,x_{Bt},
+\end{equation}
+con $0\le x_{arista}\le \text{capacidad}_{arista}$.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Aristas, capacidades y costos (C05E4).}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Arista & Capacidad & Costo \\
+\midrule
+s-A & 6 & 2 \\
+s-B & 8 & 4 \\
+A-B & 3 & 1 \\
+A-t & 6 & 5 \\
+B-t & 8 & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Resultado}
+Estado: \textbf{óptimo}.
+\begin{table}[H]
+\centering
+\small
+\caption{Flujos óptimos C05E4.}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Arista & Flujo \\
+\midrule
+s-A & 5{,}00 \\
+s-B & 5{,}00 \\
+A-B & 3{,}00 \\
+A-t & 2{,}00 \\
+B-t & 8{,}00 \\
+\midrule
+\multicolumn{2}{l}{Costo mínimo total = 59{,}0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Reconstrucción: $5{\cdot}2 + 5{\cdot}4 + 3{\cdot}1 + 2{\cdot}5 + 8{\cdot}2 = 10 + 20 + 3 + 10 + 16 = 59$.
+
+\interpretacion{Se usa el arco barato $A$-$B$ (costo 1) al máximo (3). $s$ reparte 5+5 entre $A$ y $B$. Desde $A$, 2 van directo a $t$ y 3 pasan por $B$ vía $A$-$B$; desde $B$, $3+5=8$ salen hacia $t$ por la ruta económica $B$-$t$.}
+
+\verif{Balance $s$: $5+5=10$. $A$: $-5+3+2=0$. $B$: $-5-3+8=0$. $t$: $-2-8=-10$. Capacidades: $s$-$A$ usa 5/6; $A$-$B$ satura 3/3; $B$-$t$ satura 8/8.}
+
+%==============================================================================
+\section{Síntesis}
+%==============================================================================
+
+\begin{table}[H]
+\centering
+\small
+\caption{Resumen de los cuatro ejercicios.}
+\label{tab:sint}
+\begin{tabularx}{\textwidth}{@{}lXXX@{}}
+\toprule
+Ejercicio & Problema & Óptimo & Idea clave \\
+\midrule
+C05E1 & Transporte balanceado & $Z=255$ & Igualdades en oferta y demanda \\
+C05E2 & Transbordo hub & $Z=185$ & Conservación en H; rutas mixtas \\
+C05E3 & Faltante penalizado ($p=10$) & $Z=405$ & $r_{d1}=15$; oferta $\le$ \\
+C05E4 & Flujo $s\to t$ & $Z=59$ & Balance nodal; $A$-$B$ al tope \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{Conclusiones}
+\begin{enumerate}
+\item En transporte balanceado, las restricciones de planta son igualdades (toda la oferta se despacha) y las de destino garantizan servicio exacto.
+\item El hub impone conservación de flujo; explicitar la convención de signos evita errores al auditar nodos transitorios.
+\item Las variables de faltante convierten un problema infactible en factible, separando costo logístico de penalización por nivel de servicio.
+\item En flujo de costo mínimo, solo la fuente y el sumidero tienen balance distinto de cero; los nodos intermedios conservan flujo.
+\end{enumerate}
+
+\subsection*{Supuestos}
+\begin{itemize}
+\item Variables de flujo continuas (lotes agregados divisibles).
+\item Costos lineales por unidad transportada; penalización lineal homogénea en C05E3.
+\item Capacidades de arco independientes; sin costos fijos ni indivisibilidades.
+\item C05E3: penalización idéntica en todos los centros (no refleja prioridades sanitarias diferenciadas).
+\end{itemize}
+
+\vspace{0.5em}
+\noindent\small\textit{Solver:} OR-Tools GLOP (\texttt{pywraplp}). \textit{Fuente:} \texttt{clase 5/main.ipynb}.
+
+\end{document}
