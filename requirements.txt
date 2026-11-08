@@ -1,5 +1,13 @@
-numpy
-pandas
-matplotlib
-ortools
-scipy
+# Probado con Python 3.12.3 (Linux). Versiones exactas para reproducir los números de referencia.
+numpy==2.5.4
+pandas==3.1.1
+scipy==1.18.1
+matplotlib==3.11.2
+ortools==9.15.6755
+# Ejecución de notebooks
+ipython==9.18.1
+ipykernel==7.4.0
+nbformat==5.11.1
+nbclient==0.11.0
+# Pruebas
+pytest==9.2.0

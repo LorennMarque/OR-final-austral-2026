@@ -1,0 +1,31 @@
+{
+  "generado_por": "notebooks/part2_markov_montecarlo.ipynb",
+  "semilla_maestra": 20260816,
+  "replicas": 1200,
+  "piloto": 200,
+  "horizonte_semanas": 26,
+  "estado_inicial": "Disrupcion",
+  "entradas": {
+    "data/origins.csv": "2e5b957dc34af0797c67ba1f93c1df6ccb4de52857bc56b8d4535266eaef5186",
+    "data/destinations.csv": "20502e01195b7a72e3804698f89552d8007ac1928ebf8f99c20154e676b4fd3c",
+    "data/routes.csv": "fa2b2ef64b4511bef9cdf7151eddca8982ad76474cb5e0efabe1d91ebb2b36bb",
+    "data/markov_observations.csv": "515206292659d86a6924ac89ee884574cdd5f116650bd3c40ef206ef1a38eb64",
+    "data/markov_state_parameters.csv": "f3f151a85f2b9fbf6d79f94f1e9f27c04aa9af7ba5ae1eb00b55f40218b17257"
+  },
+  "politicas_evaluadas": {
+    "outputs/part1_solution.csv": "0be31847150b8bfeb414218f7b74371fb4b0c0c0ede8be9fab7170ec3254d279",
+    "outputs/part1_solution_buffer.csv": "bf2977090a26707bf15674d19f3912e0cc0c5b6ab48adfb6be3b8158bc2c2267"
+  },
+  "salidas": {
+    "outputs/markov_matrix.csv": "05925c47cb35acac6e084643edab22fb0d4eae47aee77cd2e5a159b672eee9dc",
+    "outputs/montecarlo_summary.csv": "9b9582a87bb0bfa0860f6f4b56f8141f69a3ad72a4a58d1e93f2d414cd5735eb",
+    "outputs/paired_comparison.csv": "091f2ad9f8e1f792815622e1e21d2c9f44fce7fe8b837e8e9c5b74512e9ea922"
+  },
+  "entorno": {
+    "python": "3.12.3",
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "scipy": "1.18.1",
+    "ortools": "9.15.6755"
+  }
+}
