@@ -1,0 +1,64 @@
+/* Sólo para imprimir o exportar a PDF desde el navegador; la vista en pantalla no cambia. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 13mm;
+  }
+
+  html, body {
+    font-size: 11.5pt !important;
+  }
+
+  main.content {
+    max-width: none !important;
+  }
+
+  h1.title {
+    font-size: 1.9rem;
+  }
+
+  h2, h3, h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+    margin-top: 1.1rem;
+  }
+
+  p, li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  img, table, figure, div.sourceCode, .math.display {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .cell-output-display:has(div.sourceCode) {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  p:has(+ p > .math.display),
+  p:has(+ div.sourceCode),
+  p:has(+ .cell) {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .cell-output-display img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .cell-output-display table {
+    font-size: 9.5pt;
+  }
+
+  pre, pre code {
+    font-size: 8.4pt;
+  }
+
+  .cell-output-stdout pre {
+    font-size: 9pt;
+  }
+}

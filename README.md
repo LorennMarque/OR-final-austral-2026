@@ -101,6 +101,20 @@ La Parte I tarda unos segundos; la Parte II, unos 20 segundos (incluye el análi
 Las versiones HTML (`notebooks/*.html`) se generan aparte con Quarto (`quarto render notebooks/part1_primal.ipynb`)
 y deben volver a renderizarse después de ejecutar los notebooks.
 
+El documento renderizado oculta el código (`execute: echo: false` en el encabezado de cada notebook); sólo se ven
+un fragmento de `resolver` con OR-Tools GLOP en la Parte I y uno de `entorno` y `campana` en la Parte II, extraídos
+del código real con `g.mostrar_fragmento`. Las celdas de infraestructura llevan `#| include: false` y se ejecutan igual.
+Todo el código está en `src/` y en los notebooks.
+
+Los PDF (`notebooks/*.pdf`) se imprimen desde el HTML, que conserva las tablas HTML; `notebooks/print.css` ajusta
+tipografía y saltos de página sólo para impresión:
+
+```bash
+for nb in part1_primal part2_markov_montecarlo; do
+  google-chrome --headless=new --no-pdf-header-footer --print-to-pdf=notebooks/$nb.pdf "file://$PWD/notebooks/$nb.html"
+done
+```
+
 ## Pruebas
 
 ```bash

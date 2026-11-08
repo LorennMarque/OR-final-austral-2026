@@ -268,3 +268,23 @@ def mostrar_codigo(*funciones) -> Markdown:
     """Muestra en el notebook el código fuente de funciones definidas en src/."""
     cuerpo = "\n\n".join(inspect.getsource(f).rstrip() for f in funciones)
     return Markdown(f"```python\n{cuerpo}\n```")
+
+
+def mostrar_fragmento(titulo, *partes) -> Markdown:
+    """Fragmento textual del código real de src/, sin reescribirlo.
+
+    Cada parte es (función, desde, hasta): se toman las líneas de la función entre la primera
+    que contiene `desde` y la siguiente que contiene `hasta`, ambas incluidas. Falla si alguna
+    marca no está, para que el fragmento no quede desactualizado en silencio.
+    """
+    import textwrap
+
+    bloques = []
+    for funcion, desde, hasta in partes:
+        lineas = inspect.getsource(funcion).splitlines()
+        inicio = next(i for i, linea in enumerate(lineas) if desde in linea)
+        fin = next(i for i in range(inicio, len(lineas)) if hasta in lineas[i])
+        modulo = inspect.getmodule(funcion).__name__.replace(".", "/")
+        cuerpo = textwrap.dedent("\n".join(lineas[inicio:fin + 1]))
+        bloques.append(f"# {modulo}.py · {funcion.__name__}()\n{cuerpo}")
+    return Markdown(f"**{titulo}**\n\n```python\n" + "\n\n".join(bloques) + "\n```")
