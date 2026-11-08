@@ -52,13 +52,12 @@ src/
   transporte.py         LP: resolver, verificar, certificado, exportar/cargar políticas
   markov.py             estados, conteos, matriz, potencias, estacionaria, ocupación esperada
   simulacion.py         parámetros, futuros aleatorios, evaluación pandas y NumPy, campaña, IC
-  graficos.py           estilo común de gráficos y tablas HTML
+  graficos.py           estilo común de gráficos, tablas HTML e imágenes en tema claro u oscuro
 notebooks/              part1_primal.ipynb, part2_markov_montecarlo.ipynb (los dos notebooks principales)
-outputs/                salidas generadas por los notebooks
+outputs/                salidas generadas por los notebooks (presentacion/: imágenes para el informe)
 model_card/             part1_fma.md, part2_protocol.md, feedback.md
 tests/                  pruebas automáticas (pytest)
-docs/                   material del curso (enunciado y plantillas en docs/final/)
-ARCHIVE/                trabajos de clases anteriores; no forman parte de la entrega
+docs/final/             enunciado, plantillas de los notebooks y serie de estados entregada
 ```
 
 ## Instalación
@@ -127,6 +126,14 @@ La tolerancia es `atol=1e-7`, `rtol=0`, y las comparaciones fallan si aparecen N
 | `outputs/montecarlo_summary.csv` | Parte II | Una fila por trayectoria: métricas y componentes de costo de cada política |
 | `outputs/paired_comparison.csv` | Parte II | Medias, diferencia emparejada, error estándar e IC 95 % por métrica |
 | `outputs/part2_manifest.json` | Parte II | Semilla, tamaños, versiones y SHA-256 de entradas, políticas y salidas |
+| `outputs/presentacion/verificacion_lp_oscuro.png` | Parte I | Verificación numérica del plan nominal (objetivo, brecha primal–dual, residuos, cotas) en tema oscuro, para el apéndice |
+| `outputs/presentacion/rutas_nominal_resguardo_oscuro.png` | Parte I | Rutas cuyo flujo cambia entre el plan nominal y el de resguardo, en tema oscuro, para el apéndice |
+| `outputs/presentacion/distribucion_resguardo_claro.png` | Parte II | Distribución semanal del plan de resguardo por centro y zona, con totales, en tema claro, para el one pager |
+| `outputs/presentacion/evidencia_decision_claro.png` | Parte II | Indicadores de la recomendación (costo determinista, costo simulado, servicio, faltante) e IC 95 %, en tema claro, para el one pager |
+| `outputs/presentacion/ocupacion_teorica_simulada_oscuro.png` | Parte II | Ocupación esperada por la cadena frente a la simulada, con IC 95 %, en tema oscuro, para el apéndice |
+| `outputs/presentacion/validacion_simulacion_oscuro.png` | Parte II | Indicadores de validación de la simulación (piloto, réplicas, diferencia pandas/NumPy) en tema oscuro, para el apéndice |
+| `outputs/presentacion/sensibilidad_oscuro.png` | Parte II | Tabla resumen de sensibilidad en tema oscuro (fondo `#0E0E0E`) para la presentación |
+| `outputs/presentacion/parametros_zonas_oscuro.png` | Parte II | Parámetros por zona de la simulación (demanda, penalización, inventario, almacenamiento y descarte) en tema oscuro, para el apéndice |
 
 La Parte II recalcula el SHA-256 de cada política y se detiene si no coincide con el registrado
 por la Parte I.

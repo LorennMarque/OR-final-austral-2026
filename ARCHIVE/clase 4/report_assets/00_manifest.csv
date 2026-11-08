@@ -1,6 +1,0 @@
-Página,Pregunta,Titular,Números clave,Figura,Tabla,Advertencia
-1,¿Qué limita el plan óptimo?,Ing y Esp saturados; plataforma con holgura,"Plan (5.71, 11.43, 20.00) · 3,897 pts",01_base_utilization.svg,01_base_summary.csv,Precios sombra son locales
-2,¿Dónde genera valor ampliar capacidad?,Especialistas +10 aporta más; plataforma 0,+173 / +201 / 0 / +374 (residual≈0),02_capacity_value.svg,02_scenarios.csv,Aditividad solo en +10/+10 evaluado
-3,¿Conviene comprar capacidad?,Neto +168 pts tras costo 480,3897 → 4545 → −480 → 4065,03_capacity_purchase_waterfall.svg,03_purchase_summary.csv,Costos lineales; compra continua
-4,¿Cuánto cuesta el compromiso robusto?,Brecha 8.9–10.0% vs referencia,"Robusto 3,523 pts",04_robust_gap.svg,04_robust_summary.csv,Planes adaptados no implementables hoy
-5,¿Qué aprendemos?,Síntesis de tres modelos,Ver tabla síntesis,—,05_synthesis.csv,Ver supuestos listados

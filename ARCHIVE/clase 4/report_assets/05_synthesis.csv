@@ -1,4 +1,0 @@
-Problema de decisión,Resultado,Mecanismo,Límite
-Reoptimización por escenario,+10 Esp (+201) > +10 Ing (+173); Plat = 0,Ing y Esp binding en base; holgura en plataforma,Aditividad probada solo en +10/+10 evaluado
-Compra de capacidad,"Comprar e=20, s=15; neto +168 pts","Precios (12,16) < umbrales (~17.29, ~20.14)",Costos lineales; productividad homogénea
-Compromiso robusto,"Plan (4,29; 8,57; 20); brecha 8.9–10.0%",S2 activa Ing; S3 activa Esp; Plat con holgura,Tres escenarios; sin adaptación ex post
