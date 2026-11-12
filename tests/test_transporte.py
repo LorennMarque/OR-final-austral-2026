@@ -12,7 +12,7 @@ from src.transporte import (
 
 from conftest import TOL, cerca
 
-OBJETIVOS = {"nominal": 818.0, "S1": 1168.0, "S2": 849.5, "S3": 1039.5, "resguardo": 892.0}
+OBJETIVOS = {"nominal": 828.0, "S1": 1453.0, "S2": 849.5, "S3": 1305.0, "resguardo": 907.0}
 
 
 def copiar(sol):
@@ -85,7 +85,7 @@ def test_restricciones_explicitas(nombre, soluciones, datos):
 
 
 def test_faltantes_esperados(soluciones):
-    for nombre, faltante in {"nominal": 0, "S1": 4, "S2": 0, "S3": 4, "resguardo": 0}.items():
+    for nombre, faltante in {"nominal": 0, "S1": 9, "S2": 0, "S3": 8.5, "resguardo": 0}.items():
         cerca(soluciones[nombre][0].faltantes["faltante"].sum(), faltante)
 
 
@@ -93,7 +93,7 @@ def test_datos_modificados_de_los_escenarios(soluciones):
     assert soluciones["S1"][1].tolist() == [55, 47, 42, 51, 39]
     assert soluciones["resguardo"][1].tolist() == [53, 45, 40, 49, 37]
     cerca(soluciones["S2"][3].loc["C-OES"], 24.5)
-    cerca(soluciones["S3"][2].to_numpy(), [54.0, 85.5, 67.5])
+    cerca(soluciones["S3"][2].to_numpy(), [67.5, 72.0, 63.0])
 
 
 def test_techo_tolera_error_de_punto_flotante():
@@ -243,7 +243,7 @@ def test_validar_politica_rechaza_archivos_danados(dano, soluciones, datos):
         validar_politica(tabla, routes, origins)
 
 
-@pytest.mark.parametrize("archivo, objetivo", [("part1_solution.csv", 818.0), ("part1_solution_buffer.csv", 892.0)])
+@pytest.mark.parametrize("archivo, objetivo", [("part1_solution.csv", 828.0), ("part1_solution_buffer.csv", 907.0)])
 def test_archivos_puente_exportados(archivo, objetivo, datos):
     ruta = OUTPUTS_DIR / archivo
     if not ruta.exists():

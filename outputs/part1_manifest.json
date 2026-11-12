@@ -3,33 +3,33 @@
   "solver": "OR-Tools GLOP",
   "tolerancia": 1e-07,
   "entradas": {
-    "data/origins.csv": "2e5b957dc34af0797c67ba1f93c1df6ccb4de52857bc56b8d4535266eaef5186",
+    "data/origins.csv": "591bab6c8019d37fdf5f31d0f06bff4e2ce468b281c7f8d59d331855f25cd439",
     "data/destinations.csv": "20502e01195b7a72e3804698f89552d8007ac1928ebf8f99c20154e676b4fd3c",
     "data/routes.csv": "fa2b2ef64b4511bef9cdf7151eddca8982ad76474cb5e0efabe1d91ebb2b36bb"
   },
   "politicas": {
     "nominal": {
       "archivo": "outputs/part1_solution.csv",
-      "sha256": "0be31847150b8bfeb414218f7b74371fb4b0c0c0ede8be9fab7170ec3254d279",
-      "objetivo": 818.0,
-      "costo_transporte": 818.0,
+      "sha256": "48f8f0894e4dadcea61767f93513a0790bc3be79c4d6e9fae056f652b83fc8f8",
+      "objetivo": 828.0,
+      "costo_transporte": 828.0,
       "faltante": 0.0,
       "despacho": 211.0
     },
     "resguardo": {
       "archivo": "outputs/part1_solution_buffer.csv",
-      "sha256": "bf2977090a26707bf15674d19f3912e0cc0c5b6ab48adfb6be3b8158bc2c2267",
-      "objetivo": 892.0,
-      "costo_transporte": 892.0,
+      "sha256": "75b252fb58e87f47d266504067778ee828cf2338e07b5510a6297f7ff9182bc5",
+      "objetivo": 907.0,
+      "costo_transporte": 907.0,
       "faltante": 0.0,
       "despacho": 224.0
     }
   },
   "escenarios": {
-    "Nominal": 818.0,
-    "S1: demanda +10 %": 1168.0,
+    "Nominal": 828.0,
+    "S1: demanda +10 %": 1452.9999999999998,
     "S2: C-OES al 70 %": 849.5,
-    "S3: oferta al 90 %": 1039.5,
-    "Resguardo: demanda +5 %": 892.0
+    "S3: oferta al 90 %": 1305.0,
+    "Resguardo: demanda +5 %": 907.0
   }
 }

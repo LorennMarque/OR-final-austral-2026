@@ -18,7 +18,7 @@ sostiene esa comparación?
 | `outputs/part1_solution.csv` | política nominal | Parte I; huella SHA-256 controlada contra `part1_manifest.json` |
 | `outputs/part1_solution_buffer.csv` | política de resguardo | ídem |
 | `data/markov_observations.csv` | estimación de la matriz | material del curso: copia sin cambios de `docs/final/markov_observations.csv` |
-| `data/markov_state_parameters.csv` | multiplicadores por estado | **supuesto sintético** |
+| `data/markov_state_parameters.csv` | multiplicadores por estado | datos de la cátedra |
 | `data/routes.csv`, `data/destinations.csv` | red, costos, inventario y depósito | material del curso |
 
 ## Cadena de Markov
@@ -98,24 +98,24 @@ demanda en Pico 1,10 y 1,30 (referencia 1,20), y penalizaciones ×0,5 y ×1,5. L
 políticas no cambian. Dentro de cada variante las dos políticas comparten el mismo futuro; entre
 variantes eso sólo se garantiza para las penalizaciones, que no alteran ningún sorteo. Cambiar la
 disponibilidad o la demanda modifica los futuros realizados, así que las diferencias entre variantes
-no son emparejadas. El punto de equilibrio de la penalización (factor ≈ 0,09) vale para estos dos
+no son emparejadas. El punto de equilibrio de la penalización (factor ≈ 0,10) vale para estos dos
 planes fijos, no para planes reoptimizados con otras penalizaciones.
 Esas corridas no modifican los resultados de referencia ni se guardan en `outputs/`; sólo indican
-qué supuestos podrían invertir la conclusión.
+qué cambios de un parámetro podrían invertir la conclusión.
 
 ## Resultados con los datos actuales
 
 | Métrica | Nominal | Resguardo | Diferencia | IC 95 % |
 |---|---:|---:|---:|---|
-| Costo total | 122.539,83 | 103.122,97 | −19.416,86 | [−19.539,06; −19.294,66] |
-| Nivel de servicio | 0,7464 | 0,7980 | +0,0516 | [0,0514; 0,0519] |
-| Unidades faltantes | 1.488,4 | 1.186,1 | −302,3 | [−304,1; −300,6] |
-| Fracción de semanas con faltante | 0,944 | 0,837 | −0,106 | [−0,111; −0,102] |
-| Inventario medio | 13,71 | 28,60 | +14,88 | [14,34; 15,43] |
-| Descarte | 0,03 | 1,45 | +1,42 | [1,11; 1,73] |
+| Costo total | 99.906,21 | 82.363,53 | −17.542,68 | [−17.679,04; −17.406,32] |
+| Nivel de servicio | 0,8058 | 0,8527 | +0,0469 | [0,0466; 0,0472] |
+| Unidades faltantes | 1.141,0 | 866,8 | −274,2 | [−276,2; −272,3] |
+| Fracción de semanas con faltante | 0,921 | 0,774 | −0,147 | [−0,153; −0,142] |
+| Inventario medio | 16,55 | 36,16 | +19,61 | [18,89; 20,34] |
+| Descarte | 0,11 | 2,92 | +2,82 | [2,25; 3,38] |
 
 Los intervalos miden sólo el error de simulación, condicional a la matriz estimada y a los
-parámetros por estado supuestos.
+parámetros por estado de la cátedra.
 
 ## Salidas
 

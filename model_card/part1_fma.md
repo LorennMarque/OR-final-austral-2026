@@ -24,7 +24,7 @@ aprobaciones ni fechas de congelamiento por parte de la cátedra, que no están 
 
 | Símbolo | Significado | Unidad | Columna |
 |---|---|---|---|
-| $a_i$ | Oferta máxima del centro $i$ | unidades logísticas/semana | `origins.supply` (**reconstruida**) |
+| $a_i$ | Oferta máxima del centro $i$ | unidades logísticas/semana | `origins.supply` (datos de la cátedra: Norte 75, Centro 80, Sur 70) |
 | $d_j$ | Demanda nominal de la zona $j$ | unidades/semana | `destinations.nominal_demand` |
 | $u_{ij}$ | Capacidad de la ruta | unidades/semana | `routes.capacity` |
 | $c_{ij}$ | Costo unitario de la ruta | puntos logísticos/unidad | `routes.unit_cost` |
@@ -100,11 +100,11 @@ Se ejecutan en el notebook y en `tests/test_transporte.py` con la misma función
 
 | Instancia | Objetivo | Faltante | Despacho |
 |---|---:|---:|---:|
-| Nominal | 818,0 | 0 | 211 |
-| S1 | 1.168,0 | 4 (Interior) | 230 |
+| Nominal | 828,0 | 0 | 211 |
+| S1 | 1.453,0 | 9 (Interior) | 225 |
 | S2 | 849,5 | 0 | 211 |
-| S3 | 1.039,5 | 4 (Interior) | 207 |
-| Resguardo | 892,0 | 0 | 224 |
+| S3 | 1.305,0 | 8,5 (Interior) | 202,5 |
+| Resguardo | 907,0 | 0 | 224 |
 
 ## Salida puente
 

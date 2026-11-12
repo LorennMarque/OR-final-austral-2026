@@ -26,21 +26,21 @@ modelo lineal continuo, resuelto con otro solver.
 
 | Instancia | Objetivo (puntos/semana) | Faltante |
 |---|---:|---:|
-| Nominal | 818,0 | 0 |
-| S1: demanda +10 % | 1.168,0 | 4 |
+| Nominal | 828,0 | 0 |
+| S1: demanda +10 % | 1.453,0 | 9 |
 | S2: C-OES al 70 % | 849,5 | 0 |
-| S3: oferta al 90 % | 1.039,5 | 4 |
-| Resguardo: demanda +5 % | 892,0 | 0 |
+| S3: oferta al 90 % | 1.305,0 | 8,5 |
+| Resguardo: demanda +5 % | 907,0 | 0 |
 
 Monte Carlo (1.200 trayectorias, diferencia emparejada resguardo − nominal, IC 95 %):
 
 | Métrica | Nominal | Resguardo | Diferencia | IC 95 % |
 |---|---:|---:|---:|---|
-| Costo total por trayectoria | 122.539,8 | 103.123,0 | −19.416,9 | [−19.539,1; −19.294,7] |
-| Nivel de servicio | 0,7464 | 0,7980 | +0,0516 | [0,0514; 0,0519] |
+| Costo total por trayectoria | 99.906,2 | 82.363,5 | −17.542,7 | [−17.679,0; −17.406,3] |
+| Nivel de servicio | 0,8058 | 0,8527 | +0,0469 | [0,0466; 0,0472] |
 
-El resguardo es la mejor de las dos políticas fijas evaluadas bajo el modelo supuesto, pero ninguna
-alcanza un servicio razonable (≈ 80 %). Los costos son **puntos de costo logístico**, no dinero.
+El resguardo es la mejor de las dos políticas fijas evaluadas, pero ninguna alcanza un servicio
+alto (85 % en el resguardo). Los costos son **puntos de costo logístico**, no dinero.
 
 ## Estructura
 
@@ -157,21 +157,19 @@ por la Parte I.
 | Archivo | Origen |
 |---|---|
 | `destinations.csv`, `routes.csv` | Material del curso (estaban en `docs/final/`). |
-| `origins.csv` | **Reconstruido.** El archivo de oferta no estaba disponible; la oferta (Norte 60, Centro 95, Sur 75) se reconstruyó con asistencia de IA el 07/11/2026. Con 230 unidades frente a 211 de demanda, el caso nominal es factible con poca holgura. |
-| `markov_state_parameters.csv` | **Supuesto sintético.** El enunciado describe los estados sólo en palabras; los multiplicadores y disponibilidades se eligieron siguiendo esa descripción. |
+| `origins.csv` | Material de la cátedra: Norte 75, Centro 80, Sur 70 (225 unidades frente a 211 de demanda). Reemplaza la oferta reconstruida del 07/11/2026. |
+| `markov_state_parameters.csv` | Material de la cátedra: multiplicadores y disponibilidad por estado (Normal 1,00 / 1,00 / 0,98; Pico 1,20 / 0,85 / 0,90; Disrupción 1,00 / 0,60 / 0,70). Reemplaza los parámetros sintéticos. |
 | `markov_observations.csv` | Material del curso: copia sin cambios de `docs/final/markov_observations.csv`, la serie histórica que el enunciado da por entregada (160 semanas, la última en Disrupción). El notebook verifica que ambos archivos sean idénticos. |
 
-Dependen de los supuestos todos los costos y faltantes de la Parte I (por la oferta) y la magnitud
-de todos los resultados Monte Carlo (por los parámetros por estado). Validarlos en la
-realidad requeriría ofertas medidas por centro y estimaciones de demanda, capacidad y
-disponibilidad por régimen.
+Los costos, faltantes y resultados Monte Carlo usan estos archivos. Siguen siendo datos didácticos
+del caso, no mediciones de una operación real.
 
 ## Limitaciones del modelo
 
 - Plan semanal fijo durante 26 semanas: sin reoptimización, pronóstico ni pedidos pendientes.
 - Variables continuas (unidades divisibles); despachos en pallets enteros requerirían un modelo entero.
-- La penalización por faltante es un valor asignado y domina el costo simulado (≈ 86 % en la política nominal).
-- Los intervalos Monte Carlo miden error de simulación condicional a los supuestos; no incluyen la
-  incertidumbre de estimar la matriz (sólo 12 transiciones observadas desde Disrupción) ni la de los
-  parámetros sintéticos.
+- La penalización por faltante es un valor asignado y domina el costo simulado (≈ 81 % en la política nominal).
+- Los intervalos Monte Carlo miden error de simulación condicional a la matriz estimada y a los
+  parámetros por estado de la cátedra; no incluyen la incertidumbre de estimar la matriz (sólo 12
+  transiciones observadas desde Disrupción).
 - Sólo se comparan dos políticas; "resguardo" no es una política óptima del problema estocástico.

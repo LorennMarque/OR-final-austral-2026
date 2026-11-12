@@ -133,7 +133,7 @@ def test_limite_determinista(datos, red, flujos):
     cerca([r["faltante"], r["descarte"], r["servicio"]], [0, 0, 1])
     cerca(r["traza"]["inventario"], np.tile(red["inventario_inicial"], (26, 1)))
     almacen = red["inventario_inicial"] @ red["almacenaje"]
-    cerca(r["costo"], 26 * (818.0 + almacen))
+    cerca(r["costo"], 26 * (828.0 + almacen))
 
 
 def test_capacidad_cero_usa_solo_el_inventario_inicial(datos, red, flujos):
@@ -236,9 +236,9 @@ def test_ocupacion_de_estados(campana_completa, matriz):
 def test_regresion_resultados_de_referencia(campana_completa):
     comparacion = sim.comparacion_emparejada(campana_completa[0]).set_index("metrica")
     cerca(comparacion.loc["Costo total", ["nominal", "resguardo", "diferencia"]].to_numpy(dtype=float),
-          [122539.83, 103122.97, -19416.86], atol=0.01)
+          [99906.21, 82363.53, -17542.68], atol=0.01)
     cerca(comparacion.loc["Nivel de servicio", ["nominal", "resguardo", "diferencia"]].to_numpy(dtype=float),
-          [0.7464, 0.7980, 0.0516], atol=5e-5)
+          [0.8058, 0.8527, 0.0469], atol=5e-5)
 
 
 # --- Estadística y parámetros ------------------------------------------------------------------
@@ -265,7 +265,7 @@ def test_error_estandar_usa_las_diferencias(campana_completa):
 
 def test_parametros_por_estado(parametros):
     assert list(parametros.index) == ["Normal", "Pico", "Disrupcion"]
-    cerca(parametros.to_numpy(), [[1.0, 1.0, 0.95], [1.2, 0.8, 0.9], [1.0, 0.5, 0.5]])
+    cerca(parametros.to_numpy(), [[1.0, 1.0, 0.98], [1.2, 0.85, 0.9], [1.0, 0.6, 0.7]])
 
 
 @pytest.mark.parametrize("dano", ["falta_estado", "repetido", "probabilidad", "negativo", "nan", "columna"])
